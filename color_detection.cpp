@@ -30,7 +30,7 @@
 * Low Value: 87
 * High Value: 217
 */
-
+// Compile with: g++ color_detection.cpp -o color -lopencv_core -lopencv_highgui -lopencv_flann -lopencv_imgproc
 
 // Use namespace for opencv
 using namespace cv;
