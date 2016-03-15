@@ -51,7 +51,7 @@ void cleanThresholdedImage(Mat& thresholdImage)
 
 int main( int argc, char** argv)
 {
-	VideoCapture cap(1); //capture from camera
+	VideoCapture cap( 0 ); //capture from camera
 	if (!cap.isOpened())
 	{
 		cout << "Cannot open the web cam" << endl;
