@@ -29,7 +29,7 @@ Rect largestRectInFrame(vector<Rect> rects)
 			largest_index = i;
 		}
 	}
-	cout << largest_index << endl;
+	//cout << largest_index << endl;
 	return rects[largest_index];
 }
 
@@ -84,7 +84,6 @@ int main(int argc, char **argv)
 			cout << "You broke some stuff, cutting out\n";
 			return 1;
 		}
-
 		cvtColor(cap, frame, CV_BGR2HSV); //convert to HSV from RGB
 	
 		inRange(frame, Scalar(lowHue, lowSaturation, lowValue), Scalar(highHue, highSaturation, highValue), threshold); //threshold that thang for the "threshold" debug window	
@@ -126,13 +125,15 @@ int main(int argc, char **argv)
 		{
 			rectangle( temp, largestRectInFrame(bounding_rects), Scalar(160, 200, 200), 2, 8);
 			rectangle( frame, largestRectInFrame(bounding_rects), Scalar(160, 200, 200), 2, 8);
+			rectangle( cap, largestRectInFrame(bounding_rects), Scalar(160, 200, 200), 2, 8);
 		}
 
-		imshow("frame", frame);
+		imshow("HSV", frame);
+		imshow("RGB", cap);
 		imshow("threshold", threshold);
 		imshow("temp", temp);
 
-		waitKey(30);
+		waitKey(17);
 		//Mat_<uchar>::iterator it = threshold_frame.begin<uchar>();
 		//Mat_<uchar>::iterator end = threshold_frame.end<uchar>();
 	}
