@@ -47,6 +47,31 @@ int main(int argc, char **argv)
 	
 	namedWindow("Control", CV_WINDOW_AUTOSIZE);
 	
+	// Identifies yellow but has trouble w/red
+	// int lowHue = 0;
+	// int highHue = 46;
+	
+	// int lowSaturation = 0;
+	// int highSaturation = 255;
+	
+	// int lowValue = 72;
+	// int highValue = 255;
+
+
+
+	// Identifies red but has trouble w/yellow
+	// int lowHue = 0;
+	// int highHue = 255;
+	
+	// int lowSaturation = 134;
+	// int highSaturation = 255;
+	
+	// int lowValue = 0;
+	// int highValue = 255;
+
+
+
+	// Identifies red but has trouble w/yellow
 	int lowHue = 17;
 	int highHue = 40;
 	
@@ -56,8 +81,8 @@ int main(int argc, char **argv)
 	int lowValue = 70;
 	int highValue = 199;
 	
-	Scalar lowRed(0, 201, 194);
-	Scalar highRed(10, 255, 255);
+	Scalar lowRed(46, 81, 255);
+	Scalar highRed(0, 0, 255);
 	
 	Scalar lowYellow(13, 89, 194);
 	Scalar highYellow(30, 204, 255);
@@ -66,8 +91,8 @@ int main(int argc, char **argv)
 	Scalar highBlue(118, 255, 255);
 
 	//Create Track bars in window
-	cvCreateTrackbar("Low Hue", "Control", &lowHue, 179); //Hue (0 - 179)
-	cvCreateTrackbar("High Hue", "Control", &highHue, 179);
+	cvCreateTrackbar("Low Hue", "Control", &lowHue, 255); //Hue (0 - 179)
+	cvCreateTrackbar("High Hue", "Control", &highHue, 255);
 	cvCreateTrackbar("Low Saturation", "Control", &lowSaturation, 255); //Saturation (0 - 255)
 	cvCreateTrackbar("High Saturation", "Control", &highSaturation, 255);
 	cvCreateTrackbar("Low Value", "Control", &lowValue, 255); //Value (0 - 255)
