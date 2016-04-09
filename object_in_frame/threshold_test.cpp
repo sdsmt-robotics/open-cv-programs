@@ -89,11 +89,11 @@ int main(int argc, char **argv)
 	int yellowLowValue = 70;
 	int yellowHighValue = 255;
 
-	int redLowHue = 46;
+	int redLowHue = 0;
 	int redHighHue = 179;
-	int redLowSaturation = 81;
+	int redLowSaturation = 119;
 	int redHighSaturation = 255;
-	int redLowValue = 68;
+	int redLowValue = 117;
 	int redHighValue = 255;
 	
 	Scalar lowRed(46, 81, 255);
@@ -106,15 +106,15 @@ int main(int argc, char **argv)
 	Scalar highBlue(118, 255, 255);
 
 	//Create Track bars in window
-	cvCreateTrackbar("Yellow Low Hue", "Yellow Control", &yellowLowHue, 179); //Hue (0 - 179)
-	cvCreateTrackbar("Yellow High Hue", "Yellow Control", &yellowHighHue, 179);
+	cvCreateTrackbar("Yellow Low Hue", "Yellow Control", &yellowLowHue, 255); //Hue (0 - 179)
+	cvCreateTrackbar("Yellow High Hue", "Yellow Control", &yellowHighHue, 255);
 	cvCreateTrackbar("Yellow Low Saturation", "Yellow Control", &yellowLowSaturation, 255); //Saturation (0 - 255)
 	cvCreateTrackbar("Yellow High Saturation", "Yellow Control", &yellowHighSaturation, 255);
 	cvCreateTrackbar("Yellow Low Value", "Yellow Control", &yellowLowValue, 255); //Value (0 - 255)
 	cvCreateTrackbar("Yellow High Value", "Yellow Control", &yellowHighValue, 255);
 
-	cvCreateTrackbar("Red Low Hue", "Red Control", &redLowHue, 179); //Hue (0 - 179)
-	cvCreateTrackbar("Red High Hue", "Red Control", &redHighHue, 179);
+	cvCreateTrackbar("Red Low Hue", "Red Control", &redLowHue, 255); //Hue (0 - 179)
+	cvCreateTrackbar("Red High Hue", "Red Control", &redHighHue, 255);
 	cvCreateTrackbar("Red Low Saturation", "Red Control", &redLowSaturation, 255); //Saturation (0 - 255)
 	cvCreateTrackbar("Red High Saturation", "Red Control", &redHighSaturation, 255);
 	cvCreateTrackbar("Red Low Value", "Red Control", &redLowValue, 255); //Value (0 - 255)

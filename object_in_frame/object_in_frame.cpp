@@ -3,7 +3,7 @@
 #include "opencv2/imgproc/imgproc.hpp"
 #include <vector>
 
-#define AREA_THRESHOLD 200
+#define AREA_THRESHOLD 2400
 
 using namespace std;
 using namespace cv;
@@ -13,11 +13,11 @@ VideoCapture camera;
 bool yellow_object_seen = false;
 bool red_object_seen    = false;
 
-Scalar lowRed(46, 81, 255);
-Scalar highRed(0, 0, 255);
+Scalar lowRed(0, 119, 117);
+Scalar highRed(179, 255, 255);
 	
-Scalar lowYellow(17, 50, 68);
-Scalar highYellow(40, 255, 255);
+Scalar lowYellow(17, 50, 70);
+Scalar highYellow(50, 255, 255);
 	
 Scalar lowBlue(98, 0, 165);
 Scalar highBlue(118, 255, 255);
@@ -168,7 +168,7 @@ int main (int argc, char **argv)
 	init_camera();
 	while(1)
 	{
-		waitKey(1000);
+		waitKey(33);
 		grabFrame();
 	}
 }
