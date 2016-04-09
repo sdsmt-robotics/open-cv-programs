@@ -4,7 +4,7 @@
 #include "opencv2/imgproc/imgproc.hpp"
 #include <vector>
 
-#define AREA_THRESHOLD 500
+#define AREA_THRESHOLD 2400
 
 using namespace std;
 using namespace cv;
@@ -14,8 +14,8 @@ VideoCapture camera;
 bool yellow_object_seen = false;
 bool red_object_seen    = false;
 
-Scalar lowRed(46, 81, 255);
-Scalar highRed(0, 0, 255);
+Scalar lowLowRed(46, 81, 255);
+Scalar higLowhRed(0, 0, 255);
 	
 Scalar lowYellow(13, 89, 194);
 Scalar highYellow(30, 204, 255);
@@ -82,15 +82,17 @@ int main(int argc, char **argv)
 	namedWindow("Yellow Control", CV_WINDOW_AUTOSIZE);
 	namedWindow("Red Control", CV_WINDOW_AUTOSIZE);
 
-	int yellowLowHue = 17;
-	int yellowHighHue = 50;
+	int yellowLowHue = 15;
+	int yellowHighHue = 45;
 	int yellowLowSaturation = 50;
 	int yellowHighSaturation = 255;	
-	int yellowLowValue = 70;
+	int yellowLowValue = 118;
 	int yellowHighValue = 255;
 
-	int redLowHue = 0;
-	int redHighHue = 179;
+	int redLowerLowHue = 0;
+	int redLowerHighHue = 12;
+	int redUpperLowHue = 165;
+	int redUpperHighHue = 179;
 	int redLowSaturation = 119;
 	int redHighSaturation = 255;
 	int redLowValue = 117;
@@ -106,21 +108,23 @@ int main(int argc, char **argv)
 	Scalar highBlue(118, 255, 255);
 
 	//Create Track bars in window
-	cvCreateTrackbar("Yellow Low Hue", "Yellow Control", &yellowLowHue, 255); //Hue (0 - 179)
-	cvCreateTrackbar("Yellow High Hue", "Yellow Control", &yellowHighHue, 255);
+	cvCreateTrackbar("Yellow Low Hue", "Yellow Control", &yellowLowHue, 179); //Hue (0 - 179)
+	cvCreateTrackbar("Yellow High Hue", "Yellow Control", &yellowHighHue, 179);
 	cvCreateTrackbar("Yellow Low Saturation", "Yellow Control", &yellowLowSaturation, 255); //Saturation (0 - 255)
 	cvCreateTrackbar("Yellow High Saturation", "Yellow Control", &yellowHighSaturation, 255);
 	cvCreateTrackbar("Yellow Low Value", "Yellow Control", &yellowLowValue, 255); //Value (0 - 255)
 	cvCreateTrackbar("Yellow High Value", "Yellow Control", &yellowHighValue, 255);
 
-	cvCreateTrackbar("Red Low Hue", "Red Control", &redLowHue, 255); //Hue (0 - 179)
-	cvCreateTrackbar("Red High Hue", "Red Control", &redHighHue, 255);
+	cvCreateTrackbar("Red Lower Low Hue", "Red Control", &redLowerLowHue, 179); //Hue (0 - 179)
+	cvCreateTrackbar("Red Lower High Hue", "Red Control", &redLowerHighHue, 179);
+	cvCreateTrackbar("Red Upper Low Hue", "Red Control", &redUpperLowHue, 179);
+	cvCreateTrackbar("Red Upper High Hue", "Red Control", &redUpperHighHue, 179);
 	cvCreateTrackbar("Red Low Saturation", "Red Control", &redLowSaturation, 255); //Saturation (0 - 255)
 	cvCreateTrackbar("Red High Saturation", "Red Control", &redHighSaturation, 255);
 	cvCreateTrackbar("Red Low Value", "Red Control", &redLowValue, 255); //Value (0 - 255)
 	cvCreateTrackbar("Red High Value", "Red Control", &redHighValue, 255);
 
-	Mat cap, frame, threshold, red, yellow;
+	Mat cap, frame, threshold, red, red_lower, red_upper, yellow;
 	bool frame_available;
 
 	while(1)
@@ -134,36 +138,18 @@ int main(int argc, char **argv)
 		cvtColor(cap, frame, CV_BGR2HSV); //convert to HSV from RGB
 	
 		//inRange(frame, Scalar(lowHue, lowSaturation, lowValue), Scalar(highHue, highSaturation, highValue), threshold); //threshold that thang for the "threshold" debug window	
-		inRange(frame, Scalar(redLowHue, redLowSaturation, redLowValue), Scalar(redHighHue, redHighSaturation, redHighValue), red);	
+		inRange(frame, Scalar(redLowerLowHue, redLowSaturation, redLowValue), Scalar(redLowerHighHue, redHighSaturation, redHighValue), red_lower);	
+		inRange(frame, Scalar(redUpperLowHue, redLowSaturation, redLowValue), Scalar(redUpperHighHue, redHighSaturation, redHighValue), red_upper);
 		inRange(frame, Scalar(yellowLowHue, yellowLowSaturation, yellowLowValue), Scalar(yellowHighHue, yellowHighSaturation, yellowHighValue), yellow);
 
 		//cleanThresholdedImage(threshold);
-		cleanThresholdedImage(red);
+		cleanThresholdedImage(red_lower);
+		cleanThresholdedImage(red_upper);
 		cleanThresholdedImage(yellow);
 
 		vector<vector<Point> > contours;
 		vector<Vec4i> hierarchy;
 		vector<Rect> bounding_rects;
-
-		//basic dealio for the thresholded image
-		/*findContours(threshold, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE);
-		for( int i = 0; i < contours.size(); i++ )
-		{
-			bounding_rects.push_back( boundingRect( Mat(contours[i]) ) );
-		}
-		if(bounding_rects.size() > 0)
-		{
-			Rect largest = largestRectInFrame(bounding_rects);
-			rectangle( cap, largest, Scalar(150, 127, 200), 1, 8);
-			if(largest.area() > AREA_THRESHOLD)
-			{
-				cout << "Threshold object center at: (" << (largest.x + largest.width/2)
-				<< ", " << (largest.y + largest.height/2) << ")" << endl;
-			}
-		}
-		contours.clear();
-		hierarchy.clear();
-		bounding_rects.clear();*/
 
 		//same kit as above for the yellow
 		Mat yellow_copy = yellow.clone();
@@ -188,6 +174,7 @@ int main(int argc, char **argv)
 		bounding_rects.clear();
 
 		//same thing for the red
+		red = red_lower + red_upper;
 		Mat red_copy = red.clone();
 		findContours(red_copy, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE);
 		for( int i = 0; i < contours.size(); i++ )
