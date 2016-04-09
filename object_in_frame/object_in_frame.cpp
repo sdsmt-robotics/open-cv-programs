@@ -1,7 +1,8 @@
 #include <iostream>
-#include "opencv2/highgui/highgui.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
+#include "opencv2/highgui/highgui.hpp"
 #include <vector>
+#include <unistd.h>
 
 #define AREA_THRESHOLD 2400
 
@@ -168,7 +169,7 @@ int main (int argc, char **argv)
 	init_camera();
 	while(1)
 	{
-		waitKey(33);
+		usleep(33000);
 		grabFrame();
 	}
 }
